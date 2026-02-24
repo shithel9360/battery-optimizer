@@ -204,7 +204,7 @@ const App: React.FC = () => {
           <div>
             <div className="flex-row items-center gap-10">
               <h1>AION Battery</h1>
-              <div style={{ background: 'rgba(52, 211, 153, 0.1)', padding: '4px 8px', borderRadius: '6px', color: 'var(--eco)', fontSize: '10px', fontWeight: 700 }}>v2.0 UPGRADE</div>
+              <div style={{ background: 'rgba(52, 211, 153, 0.1)', padding: '4px 8px', borderRadius: '6px', color: 'var(--eco)', fontSize: '10px', fontWeight: 700 }}>v2.1 UPGRADE</div>
             </div>
             <p className="subtitle">Next-Gen Lithium Health & Ecology Suite</p>
           </div>

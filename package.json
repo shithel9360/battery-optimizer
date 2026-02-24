@@ -1,7 +1,7 @@
 {
   "name": "battery-optimizer",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "Next-Gen AI Battery Health & Sustainability Suite for macOS",
   "author": "AION AI",
   "main": "main.cjs",
@@ -11,6 +11,7 @@
     "build": "tsc -b && vite build --outDir dist-vite",
     "dist": "npm run build && electron-builder --mac mas",
     "dist:dmg": "npm run build && electron-builder --mac dmg -c.mac.target=dmg",
+    "release": "bash release-app.sh",
     "lint": "eslint .",
     "preview": "vite preview"
   },
