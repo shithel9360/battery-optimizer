@@ -100,8 +100,8 @@ const App: React.FC = () => {
           const tempMatch = rawDetailed.match(/"Temperature" = (\d+)/);
 
           const healthVal = maxCap && designCap ? (parseInt(maxCap[1]) / parseInt(designCap[1]) * 100).toFixed(1) : '98.5';
-          // ioreg Temperature is in centi-Kelvin (e.g. 30150 = 301.50K = 28.35°C)
-          const tempVal = tempMatch ? (parseInt(tempMatch[1]) / 100 - 273.15).toFixed(1) : '32.4';
+          // ioreg Temperature is in deci-Kelvin (e.g. 3047 = 304.7K = 31.6°C)
+          const tempVal = tempMatch ? (parseInt(tempMatch[1]) / 10 - 273.15).toFixed(1) : '30.0';
 
           setBattery({
             percentage: percMatch ? parseInt(percMatch[1]) : 0,
