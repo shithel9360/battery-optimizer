@@ -140,12 +140,18 @@ function runAIEngine() {
 }
 
 function createWindow() {
+  const preloadPath = app.isPackaged
+    ? path.join(app.getAppPath(), 'preload.cjs')
+    : path.join(__dirname, 'preload.cjs');
+
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 850,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.cjs'),
-      webSecurity: false
+      preload: preloadPath,
+      webSecurity: false,
+      contextIsolation: true,
+      nodeIntegration: false
     },
     titleBarStyle: 'hiddenInset',
     vibrancy: 'under-window',
@@ -154,10 +160,21 @@ function createWindow() {
   });
 
   if (app.isPackaged) {
-    mainWindow.loadFile(path.join(__dirname, 'dist-vite', 'index.html'));
+    const indexPath = path.join(app.getAppPath(), 'dist-vite', 'index.html');
+    console.log('Loading packaged file:', indexPath);
+    mainWindow.loadFile(indexPath).catch(err => {
+      console.error('Failed to load file:', err);
+      // Fallback: try __dirname path
+      mainWindow.loadFile(path.join(__dirname, 'dist-vite', 'index.html'));
+    });
   } else {
     mainWindow.loadURL('http://localhost:5173');
+    // mainWindow.webContents.openDevTools();
   }
+
+  mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+    console.error('Page failed to load:', errorCode, errorDescription);
+  });
 }
 
 app.whenReady().then(() => {
