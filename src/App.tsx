@@ -91,7 +91,8 @@ const App: React.FC = () => {
           setAiState(currentAi);
 
           const percMatch = rawBatt.match(/(\d+)%/);
-          const charging = rawBatt.includes('charging');
+          // Properly detect charging state: 'charging' but NOT 'discharging' or 'not charging'
+          const isActuallyCharging = rawBatt.includes('charging') && !rawBatt.includes('discharging') && !rawBatt.includes('not charging');
 
           const maxCap = rawDetailed.match(/"MaxCapacity" = (\d+)/);
           const designCap = rawDetailed.match(/"DesignCapacity" = (\d+)/);
@@ -99,11 +100,12 @@ const App: React.FC = () => {
           const tempMatch = rawDetailed.match(/"Temperature" = (\d+)/);
 
           const healthVal = maxCap && designCap ? (parseInt(maxCap[1]) / parseInt(designCap[1]) * 100).toFixed(1) : '98.5';
+          // ioreg Temperature is in centi-Kelvin (e.g. 30150 = 301.50K = 28.35°C)
           const tempVal = tempMatch ? (parseInt(tempMatch[1]) / 100 - 273.15).toFixed(1) : '32.4';
 
           setBattery({
             percentage: percMatch ? parseInt(percMatch[1]) : 0,
-            isCharging: charging,
+            isCharging: isActuallyCharging,
             source: rawBatt.includes('AC Power') ? 'AC Power' : 'Battery',
             cycleCount: cycleMatch ? parseInt(cycleMatch[1]) : 0,
             health: parseFloat(healthVal as string),
